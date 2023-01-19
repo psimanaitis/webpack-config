@@ -57,6 +57,32 @@ optimization: {
 5. `open ./3/dist/main.js` note that we did not import the square method from the src/math.js module. That function is what's known as "dead code", meaning an unused export and it will be dropped when running production mode.
 
 
-## IV Output management, hashing https://webpack.js.org/guides/output-management/
+## IV [Output management](https://webpack.js.org/guides/output-management/)
+0. `open ./4/dist/index.html`
+1. Add `<script src="./math.bundle.js"></script>` in index.html head part
+2. Change main script include to `<script src="./index.bundle.js"></script>` in index.html body part
+3. Change webpack config entry to part to have multiple entries
+``` 
+entry: {
+    index: './4/index.ts',
+    math: './4/math.ts',
+  },
+ ```
+And output filename as `filename: '[name].bundle.js',`
+4. `npx webpack --config 3/webpack.config.js` on observe output
+5. Generating html file can be done with `html-webpack-plugin` `npm install --save-dev html-webpack-plugin`
+6. Update webpack config to include plugins section 
+```
+plugins: [
+   new HtmlWebpackPlugin({
+      title: 'Output Management',
+   }),
+ ],
+``` 
+and include it as import `const HtmlWebpackPlugin = require('html-webpack-plugin');`
+7. Since we already generating everything under dist folder we can, add `clean: true,` to output configuration, that way dist is always cleaned up.
+8. Adding cache busting to output files can be done by changing output filename to ` filename: '[name].[contenthash].js'` 
+9. `npx webpack --config 3/webpack.config.js` on observe output
+ 
 ## V Code splitting https://webpack.js.org/guides/code-splitting
 ## VI Lazy loading https://webpack.js.org/guides/lazy-loading/
