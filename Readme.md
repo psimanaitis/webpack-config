@@ -82,7 +82,29 @@ plugins: [
 and include it as import `const HtmlWebpackPlugin = require('html-webpack-plugin');`
 7. Since we already generating everything under dist folder we can, add `clean: true,` to output configuration, that way dist is always cleaned up.
 8. Adding cache busting to output files can be done by changing output filename to ` filename: '[name].[contenthash].js'` 
-9. `npx webpack --config 3/webpack.config.js` on observe output
- 
-## V Code splitting https://webpack.js.org/guides/code-splitting
-## VI Lazy loading https://webpack.js.org/guides/lazy-loading/
+9. `npx webpack --config 4/webpack.config.js` and observe output
+
+## V [Lazy loading](https://webpack.js.org/guides/lazy-loading/) and [code splitting](https://webpack.js.org/guides/code-splitting)
+0. Remove `math` from entry points.
+1. Update `index.ts` to be 
+```
+const element = document.createElement('div');
+const button = document.createElement('button');
+button.innerText = 'Do math';
+element.appendChild(button);
+document.body.appendChild(element);
+
+button.onclick = e => import(/* webpackChunkName: "math" */ './math').then(module => {
+    const element = document.createElement('div');
+    element.innerHTML =  '5 cubed is equal to ' +  module.cube(5);
+    document.body.appendChild(element);
+});
+```
+2. `npx webpack --config 4/webpack.config.js` and network in browser output click on do math couple of times
+3. Sharing module
+4. [Extracting boilerplate](https://webpack.js.org/guides/caching/)
+4. [Lazy in react](https://reactjs.org/docs/code-splitting.html)
+4. Preload and Prefech
+
+## VI Bundle analysis
+
